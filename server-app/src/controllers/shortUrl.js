@@ -30,5 +30,27 @@ export const getAll = async (req, res) => {
     res.status(500).send({ message: "Something Went Wrong!!!" });
   }
 };
-export const getUrl = async (req, res) => {};
-export const deleteUrl = async (req, res) => {};
+export const getUrl = async (req, res) => {
+  try {
+    const shortUrl = await urlModel.findOne({ shortUrl: req.params.id });
+    if (!shortUrl) {
+      res.status(404).send({ message: "Full Url Not Found!!!" });
+    } else {
+      shortUrl.clicks++;
+      shortUrl.save();
+      res.redirect(`${shortUrl.fullUrl}`);
+    }
+  } catch (error) {
+    res.status(500).send({ message: "Something Went Wrong!!!" });
+  }
+};
+export const deleteUrl = async (req, res) => {
+  try {
+    const shortUrl = await urlModel.findByIdAndDelete({_id: req.params.id});
+    if (shortUrl) {
+      res.status(200).send({ message: "Requested URL Has Been Successfully Deleted" });
+    } 
+  } catch (error) {
+    res.status(500).send({ message: "Something Went Wrong!!!" });
+  }
+};
