@@ -20,7 +20,7 @@ export const createUrl = async (req, res) => {
 };
 export const getAll = async (req, res) => {
   try {
-    const shortUrls = await urlModel.find();
+    const shortUrls = await urlModel.find().sort({createdAt: -1});
     if (shortUrls.length < 0) {
       res.status(404).send({ message: "Short Urls Not Found!!!" });
     } else {

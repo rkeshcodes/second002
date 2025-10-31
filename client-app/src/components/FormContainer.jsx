@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { serverUrl } from "../helpers/Constants";
 import axios from "axios";
 
-const FormContainer = () => {
+const FormContainer = ({fetchData}) => {
   const [fullUrl, setFullUrl] = useState("");
 
   async function onSubmitHandler(e) {
@@ -13,11 +13,16 @@ const FormContainer = () => {
       const response = await axios.post(`${serverUrl}/shortUrl`, {
         fullUrl: fullUrl,
       });
-
+      console.log(response);
+      
       toast.success("Url Shortened");
       setFullUrl("");
+      fetchData()
     } catch (error) {
+        console.log(error);
+        
       toast.error("Wahala");
+       setFullUrl("");
     }
   }
 
